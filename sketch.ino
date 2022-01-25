@@ -17,8 +17,12 @@
 #include <LiquidCrystal.h>
 #include <math.h>
 
+int Contrast=100;
+
 // PIN Konfiguration
-const int RS = 12,
+const int
+        CR = 6, 
+        RS = 12,
         EN = 11,
         D4 = 10,
         D5 = 9,
@@ -40,6 +44,7 @@ String
 
 void setup() {                      // SETUP
     Serial.begin(9600);
+    analogWrite(CR,Contrast);
     lcd.begin(16, 2);
     irrecv.enableIRIn();
 }
@@ -50,61 +55,61 @@ Switch/Case um die Eingabe ID's der Infrarot Schnittstelle zu übersetzen
 
 void inputWatchEvent(long charValue) {
     switch(charValue) {
-        case 3476094720:            // Zahlen Kombo
+        case -217252096:            // Zahlen Kombo
             mergeStr("1");
             break;
-        case 3877175040:
+        case -417792256:
             mergeStr("2");
             break;
-        case 2239430400:
+        case -1587609856:
             mergeStr("3");
             break;
-        case 4010868480:
+        case -150405376:
             mergeStr("4");
             break;
-        case 3342401280:
+        case -484638976:
             mergeStr("5");
             break;
-        case 2774204160:
+        case -1520763136:
             mergeStr("6");
             break;
-        case 3175284480:
+        case -1119682816:
             mergeStr("7");
             break;
-        case 3041591040:
+        case -1387069696:
             mergeStr("8");
             break;
-        case 2907897600:
+        case -1253376256:
             mergeStr("9");
             break;
-        case 2540240640:
+        case -384368896:
             mergeStr("0");
             break;
-        case 501415680:
+        case -434503936:
             mergeStr(".");
             break;
-        case 1570963200:            // Eingabe löschen
+        case -1169817856:            // Eingabe löschen
             num1 = "0";
             num2 = "0";
             optr = "=";
             break;
-        case -50135296:             // Operatoren
+        case -1186529536:             // Operatoren
             operatorEvent("+");
             break;
-        case 1738080000:
+        case -367657216:
             operatorEvent("-");
             break;
-        case 1871773440:
+        case -1136394496:
             operatorEvent("/");
             break;
-        case 534839040:
+        case -1153106176:
             operatorEvent("x");
             break;
-        case -584909056:
+        case -1086259456:
             if(optr != "=")
                 determineFormula("=");
             break;
-        case 1036189440:
+        case -233963776:
             delLast();
             break;
         default:                    // Eingabe nicht valide => Keine funktion
@@ -117,6 +122,7 @@ void loop() {
         long result = irrecv.decodedIRData.decodedRawData;
         String val = String(result);
         inputWatchEvent(val.toInt());
+        Serial.println(val);
         irrecv.resume();
     }
     // LCD Handler
